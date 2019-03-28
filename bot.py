@@ -1,6 +1,4 @@
-# MakiChan bot by KawaiiMeowz
-# Version Number: 1.1.0-ALPHA
-
+# MakiChan bot by George Brellas
 
 # General dependencies
 import logging
@@ -559,22 +557,22 @@ async def coin_toss(message):
 
 # noinspection PyUnresolvedReferences
 async def set_coins(message, msg):
-    msg = re.sub('Δ', "", msg, count=1)
+    msg = re.sub('setcoins', "", msg, count=1)
     server = message.server
     user = message.author
     gg = db_check_op(server, user)
     if gg:
-        if msg.startswith("Δ"):
-            msg = re.sub('Δ', "", msg, count=1)
+        if msg.startswith("of"):
+            msg = re.sub('', "", msg, count=1)
             lucky = server.get_member(message.mentions[0])
             msg = re.sub(str(lucky), "", msg, count=1)
             coins = int(db_check_coins(lucky)) + int(msg)
             db_set_coins(lucky, coins)
-        elif msg.startswith("Ω"):
+        elif msg.startswith("mine"):
             unlucky = server.get_member(message.mentions[0].id)
             coins = 0
             db_set_coins(unlucky, coins)
-        elif msg.startswith("Ξ"):
+        elif msg.startswith("none"):
             db_set_coins(user, 0)
         else:
             coins = int(db_check_coins(message.author)) + int(msg)
@@ -1033,7 +1031,7 @@ async def on_message(message):
             db_sanity_check(message)
             await set_admin(message, msg)
 
-        elif msg.startswith('Δ'):
+        elif msg.startswith('setcoins'):
             db_sanity_check(message)
             await set_coins(message, msg)
 
